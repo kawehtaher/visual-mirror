@@ -1,6 +1,6 @@
 {
   "name": "visual-mirror",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pixel diffs tell you something changed. Visual Mirror tells you what it means.",
   "type": "module",
   "main": "dist/index.js",
