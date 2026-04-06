@@ -95,15 +95,6 @@ export ANTHROPIC_API_KEY="your-api-key-here"
 
 Get one at [console.anthropic.com](https://console.anthropic.com).
 
-## Publishing
-
-```bash
-npm login
-npm publish
-```
-
-The `prepublishOnly` script runs `tsc` automatically before publishing.
-
 ## License
 
 MIT
