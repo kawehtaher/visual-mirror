@@ -7,7 +7,7 @@ export type Issue = {
   title: string;
   description: string;
   area: string;
-}
+};
 
 export type Severity = "OK" | "MINOR" | "MAJOR";
 
@@ -15,17 +15,17 @@ export type AnalysisResult = {
   severity: Severity;
   verdict: string;
   issues: Issue[];
-}
+};
 
 export type Fix = {
   id: number;
   title: string;
   suggestion: string;
-}
+};
 
 export type FixResult = {
   fixes: Fix[];
-}
+};
 
 function imageToBase64(filePath: string): string {
   return fs.readFileSync(filePath).toString("base64");

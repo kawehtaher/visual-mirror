@@ -7,7 +7,7 @@ import { input } from "@inquirer/prompts";
 type ClipboardTool = {
   cmd: string;
   name: string;
-}
+};
 
 function hasCommand(name: string): boolean {
   try {
@@ -75,9 +75,9 @@ export async function readClipboardImage(outputDir: string): Promise<string> {
   if (tools.length === 0) {
     console.error(
       chalk.red("No clipboard tool found.\n") +
-      chalk.dim("  Install one of: wl-clipboard, xclip, xsel\n") +
-      chalk.cyan("  sudo pacman -S xclip          # Arch\n") +
-      chalk.cyan("  sudo apt install xclip        # Debian/Ubuntu"),
+        chalk.dim("  Install one of: wl-clipboard, xclip, xsel\n") +
+        chalk.cyan("  sudo pacman -S xclip          # Arch\n") +
+        chalk.cyan("  sudo apt install xclip        # Debian/Ubuntu"),
     );
     process.exit(1);
   }
@@ -92,17 +92,14 @@ export async function readClipboardImage(outputDir: string): Promise<string> {
 
       console.log(
         chalk.green("✔") +
-        ` Read reference image from clipboard via ${tool.name} (${(buf.length / 1024).toFixed(0)} KB)`,
+          ` Read reference image from clipboard via ${tool.name} (${(buf.length / 1024).toFixed(0)} KB)`,
       );
 
       return outPath;
     }
   }
 
-  console.log(
-    chalk.yellow("⚙") +
-    " No image found in clipboard.",
-  );
+  console.log(chalk.yellow("⚙") + " No image found in clipboard.");
   console.log(
     chalk.dim("  You can drag & drop an image file into this terminal, or paste its path.\n"),
   );
@@ -130,7 +127,7 @@ export async function readClipboardImage(outputDir: string): Promise<string> {
   const size = fs.statSync(outPath).size;
   console.log(
     chalk.green("✔") +
-    ` Using reference image: ${chalk.cyan(path.basename(cleaned))} (${(size / 1024).toFixed(0)} KB)`,
+      ` Using reference image: ${chalk.cyan(path.basename(cleaned))} (${(size / 1024).toFixed(0)} KB)`,
   );
 
   return outPath;

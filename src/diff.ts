@@ -10,7 +10,7 @@ const Jimp = createJimp({ formats: [png, jpeg], plugins: [resize.methods] });
 export type DiffResult = {
   diffPath: string;
   diffPercent: number;
-}
+};
 
 export async function runDiff(
   referencePath: string,
