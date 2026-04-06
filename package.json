@@ -1,0 +1,55 @@
+{
+  "name": "visual-mirror",
+  "version": "1.0.0",
+  "description": "Pixel diffs tell you something changed. Visual Mirror tells you what it means.",
+  "type": "module",
+  "main": "dist/index.js",
+  "author": {
+    "email": "kaweh.taher.1989@gmail.com",
+    "name": "Kaveh Taher",
+    "url": "https://github.com/kawehtaher"
+  },
+  "bin": {
+    "visual-mirror": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write 'src/**/*.ts'",
+    "format:check": "prettier --check 'src/**/*.ts'",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run lint && npm run format:check",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "visual-regression",
+    "screenshot",
+    "diff",
+    "testing",
+    "ai",
+    "claude"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "inquirer": "^12.6.0",
+    "jimp": "^1.6.0",
+    "open": "^10.1.0",
+    "playwright": "^1.52.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.15.2",
+    "eslint": "^10.2.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.58.0"
+  }
+}
