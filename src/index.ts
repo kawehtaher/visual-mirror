@@ -4,22 +4,27 @@ import { Command } from "commander";
 import fs from "node:fs";
 import https from "node:https";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import chalk from "chalk";
 import open from "open";
 import { input, password } from "@inquirer/prompts";
 import { captureScreenshot } from "./capture.js";
+import type { LoginHandler } from "./capture.js";
 import { readClipboardImage } from "./clipboard.js";
 import { runDiff } from "./diff.js";
 import { analyzeScreenshots } from "./analyze.js";
 import { runInteractive } from "./interactive.js";
 import { generateReport } from "./report.js";
 
+const pkgPath = path.resolve(fileURLToPath(import.meta.url), "..", "..", "package.json");
+const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8")) as { version: string };
+
 const program = new Command();
 
 program
   .name("visual-mirror")
   .description("Pixel diffs tell you something changed. Visual Mirror tells you what it means.")
-  .version("1.0.0")
+  .version(pkg.version)
   .option(
     "--ref <path>",
     "Path to reference screenshot (PNG/JPG). If omitted, reads from clipboard",
@@ -177,10 +182,43 @@ async function main() {
   // Step 1: Resolve URL (check reachability, try alt ports)
   const resolvedUrl = await resolveUrl(opts.url);
 
-  // Step 2: Capture screenshot
+  // Step 2: Capture screenshot (with optional login flow)
+  const loginHandler: LoginHandler = async (fields) => {
+    console.log();
+    console.log(chalk.yellow("⚙") + " Login screen detected.");
+    console.log(chalk.dim(`  password field: ${fields.passwordSelector}`));
+    if (fields.userSelector) {
+      console.log(chalk.dim(`  user field:     ${fields.userSelector}`));
+    }
+    if (fields.submitSelector) {
+      console.log(chalk.dim(`  submit button:  ${fields.submitSelector}`));
+    }
+    console.log();
+
+    const answer = await input({
+      message: "Log in before capturing? (y/N)",
+      default: "N",
+    });
+
+    if (answer.trim().toLowerCase() !== "y") {
+      console.log(chalk.dim("  Capturing the login page as-is."));
+      return null;
+    }
+
+    const username = fields.userSelector ? await input({ message: "Username / email:" }) : "";
+    const pwd = await password({ message: "Password:", mask: "*" });
+
+    if (!pwd.trim()) {
+      console.log(chalk.dim("  No password entered. Capturing the login page as-is."));
+      return null;
+    }
+
+    return { username, password: pwd };
+  };
+
   let capturedPath: string;
   try {
-    capturedPath = await captureScreenshot(resolvedUrl, outputDir, width, height);
+    capturedPath = await captureScreenshot(resolvedUrl, outputDir, width, height, loginHandler);
   } catch (err) {
     console.error(chalk.red(`Could not capture screenshot from ${resolvedUrl}`));
     console.error(chalk.dim(String(err)));
