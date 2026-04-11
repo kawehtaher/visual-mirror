@@ -54,6 +54,24 @@ visual-mirror --ref <path> --url <url> [options]
 visual-mirror --ref ./designs/homepage.png --url http://localhost:3000 --width 1440 --height 900
 ```
 
+### Login Detection
+
+If the captured URL lands on a login screen, Visual Mirror detects the username, password, and submit selectors and asks whether you want to authenticate before the screenshot is taken:
+
+```
+  ⚙ Login screen detected.
+    password field: #password
+    user field:     input[name="email"]
+    submit button:  button[type="submit"]
+
+  ==> Log in before capturing? (y/N) y
+  ==> Username / email: me@example.com
+  ==> Password: ********
+  ✔ Logged in successfully.
+```
+
+Decline the prompt to screenshot the login page as-is. Credentials are only used for the current run — nothing is stored on disk.
+
 ### Interactive Flow
 
 After analysis, you'll see something like:
@@ -88,13 +106,15 @@ Then you'll get targeted fix suggestions:
 
 ## Environment Setup
 
-Set your Anthropic API key:
+Visual Mirror uses the Claude API for analysis. If `ANTHROPIC_API_KEY` isn't set in your environment, you'll be prompted for one on first run and told how to persist it in your shell's rc file:
 
 ```bash
 export ANTHROPIC_API_KEY="your-api-key-here"
 ```
 
 Get one at [console.anthropic.com](https://console.anthropic.com).
+
+Chromium is installed on-demand via Playwright the first time you run the tool — no manual setup required.
 
 ## License
 
