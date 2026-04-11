@@ -25,11 +25,12 @@ visual-mirror --ref ./reference.png --url http://localhost:3000
 
 ## How It Works
 
-1. **Capture** — Takes a headless Chromium screenshot of your live URL via Playwright
-2. **Diff** — Compares the captured screenshot against your reference image pixel-by-pixel using Jimp, generating a visual diff overlay
-3. **Analyze** — Sends both screenshots to Claude Vision, which identifies specific UI issues (not just "something changed" — it tells you *what* changed)
-4. **Select** — Presents issues in an interactive terminal prompt (like `yay` on Arch) where you pick which ones to get fix suggestions for
-5. **Report** — Generates a self-contained HTML report with all three images, issues, and fix suggestions, then auto-opens it in your browser
+1. **Resolve** — Checks the URL is reachable. If not, probes nearby ports (and common dev ports like `3000`, `5173`, `8080`) and offers to use whichever one is live. Self-signed HTTPS is accepted so local dev servers Just Work.
+2. **Capture** — Takes a headless Chromium screenshot of your live URL via Playwright. If a login form is detected on the page, you're prompted to either log in (fields are auto-detected) or screenshot the login page as-is.
+3. **Diff** — Compares the captured screenshot against your reference image pixel-by-pixel using Jimp, generating a visual diff overlay
+4. **Analyze** — Sends both screenshots to Claude Vision, which identifies specific UI issues (not just "something changed" — it tells you *what* changed)
+5. **Select** — Presents issues in an interactive terminal prompt (like `yay` on Arch) where you pick which ones to get fix suggestions for
+6. **Report** — Generates a self-contained HTML report with all three images, issues, and fix suggestions, then auto-opens it in your browser
 
 ## Usage
 
